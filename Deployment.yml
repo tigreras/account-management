@@ -1,0 +1,68 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftWebConsole
+  name: job-account-management
+  labels:
+    app: job-account-management
+    app.kubernetes.io/component: job-account-management
+    app.kubernetes.io/instance: job-account-management
+    app.kubernetes.io/name: job-account-management
+    app.kubernetes.io/part-of: foundation-service
+    app.openshift.io/runtime: spring-boot
+    app.openshift.io/runtime-namespace: my-bca-bisnis-uat
+    app.openshift.io/runtime-version: latest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: job-account-management
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: job-account-management
+        deploymentconfig: job-account-management
+      annotations:
+        openshift.io/generated-by: OpenShiftWebConsole
+    spec:
+      containers:
+        - resources: {}
+          terminationMessagePath: /dev/termination-log
+          name: job-account-management
+          env:
+            - name: SPRING.PROFILES.ACTIVE
+              valueFrom:
+                configMapKeyRef:
+                  name: spring-profile
+                  key: profile_active
+            - name: GC_MAX_METASPACE_SIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: mbb-java-opts
+                  key: maxMetaspaceSize
+            - name: TZ
+              valueFrom:
+                configMapKeyRef:
+                  name: mbb-java-opts
+                  key: timeZone
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 8443
+              protocol: TCP
+            - containerPort: 8778
+              protocol: TCP
+          imagePullPolicy: IfNotPresent
+          terminationMessagePolicy: File
+          envFrom:
+            - secretRef:
+                name: mbb-secrets
+          image: >-
+            image-registry.openshift-image-registry.svc:5000/my-bca-bisnis-uat/job-account-management:latest
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler

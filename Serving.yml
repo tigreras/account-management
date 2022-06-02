@@ -1,0 +1,10 @@
+kind: Service
+apiVersion: serving.knative.dev/v1
+metadata:
+  name: job-account-management
+  labels:
+    app: job-account-management
+spec:
+  traffic:
+    - latestRevision: true
+      percent: 100

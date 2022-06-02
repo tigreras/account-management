@@ -1,0 +1,11 @@
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftNewBuild
+  name: job-account-management
+  labels:
+    build: job-account-management
+spec:
+  lookupPolicy:
+    local: false

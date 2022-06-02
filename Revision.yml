@@ -1,0 +1,8 @@
+kind: Revision
+apiVersion: serving.knative.dev/v1
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftWebConsole
+  labels:
+    app: job-account-management
+
